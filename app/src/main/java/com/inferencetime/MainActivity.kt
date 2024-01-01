@@ -10,7 +10,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val et = EdgeTrack("", "", this)
+        val et = EdgeTrack("YOUR_API_KEY", "YOUR_SESSION_ID", this)
         val metrics = EdgeTrackMetrics(
             modelName = "model_name",
             modelVersion = "model_version",

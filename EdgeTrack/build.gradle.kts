@@ -1,7 +1,20 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("maven-publish")
 }
+
+// declare library details for publishing in kts format
+ext {
+    val mGroupId = "com.github.inferencetime"
+    val mArtifactId = "edgetrack-android-sdk"
+    val mVersionCode = 1
+    val mVersionName = "0.0.1"
+
+    val mLibraryName = "EdgeTrack-Android-SDK"
+    val mLibraryDescription = "An Android SDK for collecting performance metrics of machine learning models on edge devices"
+}
+
 
 android {
     namespace = "com.inferencetime.edgetrack"
@@ -23,6 +36,14 @@ android {
             )
         }
     }
+
+// publish library details in kts format
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -50,3 +71,34 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
 }
+
+// define task for androidSourcesJar in kts format
+tasks.register<Jar>("androidSourcesJar") {
+    archiveClassifier.set("sources")
+    from(android.sourceSets["main"].java.srcDirs)
+}
+
+// publish library in kts format
+configure<PublishingExtension> {
+    publications.create<MavenPublication>("EdgeTrack-Android-SDK") {
+        groupId = "com.github.inferencetime"
+        artifactId = "edgetrack-android-sdk"
+        version = "0.0.1"
+        description = "An Android SDK for collecting performance metrics of machine learning models on edge devices"
+
+        artifact("$buildDir/libs/MyPlugin.jar")
+
+    }
+    repositories {
+        mavenLocal()
+    }
+}
+
+// define task for androidJavadocsJar in kts format
+tasks.register<Jar>("androidJavadocsJar") {
+    archiveClassifier.set("javadoc")
+    from(android.sourceSets["main"].java.srcDirs)
+}
+
+
+
