@@ -72,27 +72,30 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
 }
 
+// publish library in kts format
+afterEvaluate {
+    configure<PublishingExtension> {
+        publications.create<MavenPublication>("EdgeTrack-Android-SDK") {
+            groupId = "com.github.inferencetime"
+            artifactId = "edgetrack-android-sdk"
+            version = "0.0.1"
+            description = "An Android SDK for collecting performance metrics of machine learning models on edge devices"
+
+            artifact("$buildDir/build/outputs/aar/EdgeTrack-release.aar")
+
+        }
+        repositories {
+            mavenLocal()
+        }
+    }
+}
+
 // define task for androidSourcesJar in kts format
 tasks.register<Jar>("androidSourcesJar") {
     archiveClassifier.set("sources")
     from(android.sourceSets["main"].java.srcDirs)
 }
 
-// publish library in kts format
-configure<PublishingExtension> {
-    publications.create<MavenPublication>("EdgeTrack-Android-SDK") {
-        groupId = "com.github.inferencetime"
-        artifactId = "edgetrack-android-sdk"
-        version = "0.0.1"
-        description = "An Android SDK for collecting performance metrics of machine learning models on edge devices"
-
-        artifact("$buildDir/libs/MyPlugin.jar")
-
-    }
-    repositories {
-        mavenLocal()
-    }
-}
 
 // define task for androidJavadocsJar in kts format
 tasks.register<Jar>("androidJavadocsJar") {
