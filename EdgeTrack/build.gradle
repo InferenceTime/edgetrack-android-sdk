@@ -1,3 +1,5 @@
+import com.vanniktech.maven.publish.AndroidSingleVariantLibrary
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
@@ -30,6 +32,13 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    mavenPublishing {
+        // the first parameter represennts which variant is published
+        // the second whether to publish a sources jar
+        // the third whether to publish a javadoc jar
+        configure(new AndroidSingleVariantLibrary("release", true, true))
+    }
 }
 
 dependencies {
@@ -49,6 +58,8 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
 }
+
+
 
 
 
