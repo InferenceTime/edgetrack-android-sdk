@@ -39,7 +39,7 @@ jobs:
       - name: Publish Library
         run: |
           echo "Publishing library🚀"
-          ./gradlew publish --no-configuration-cache --no-daemon --no-parallel
+          ./gradlew publishAndReleaseToMavenCentral --no-configuration-cache --no-daemon --no-parallel
           echo "Released✅"
         env:
           ORG_GRADLE_PROJECT_VERSION_NAME: ${{ github.event.inputs.versionName }}
@@ -50,7 +50,6 @@ jobs:
 
       - name: Create and push tag
         run: |
-          git config --global user.email "orcunozyurt@hotmail.com"
           git config --global user.name "$GITHUB_ACTOR"
 
           git tag -a $TAG -m "Release v$TAG"

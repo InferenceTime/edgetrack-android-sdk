@@ -2,6 +2,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("maven-publish")
+    id "com.vanniktech.maven.publish" version "0.27.0"
 }
 
 android {
