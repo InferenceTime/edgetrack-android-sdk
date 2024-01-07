@@ -15,64 +15,44 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-#      - name: Set up JDK
-#        uses: actions/setup-java@v3
-#        with:
-#          distribution: 'zulu'
-#          java-version: '17'
-#          cache: 'gradle'
-#
-#      - name: Setup Android SDK
-#        uses: android-actions/setup-android@v2
-#
-#      - name: Grant Permission for Gradlew to Execute
-#        run: chmod +x gradlew
-#
-#      - name: Run Tests
-#        run: ./gradlew test
-#
-#      - name: Build with Gradle
-#        uses: gradle/gradle-build-action@v2
-#        with:
-#          arguments: build
-#
-#      - name: Publish Library
-#        run: |
-#          echo "Publishing library🚀"
-#          ./gradlew publishAndReleaseToMavenCentral --no-configuration-cache --no-daemon --no-parallel
-#          echo "Released✅"
-#        env:
-#          ORG_GRADLE_PROJECT_VERSION_NAME: ${{ github.event.inputs.versionName }}
-#          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_KEY }}
-#          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_PASSWORD }}
-#          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
-#          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
-
-      - name: Create and push tag
-        uses: actions-ecosystem/action-push-tag@v1
+      - name: Set up JDK
+        uses: actions/setup-java@v3
         with:
-          tag: ${{ github.event.inputs.versionName }}
-          message: 'Release ${{ github.event.inputs.versionName }}'
-#        run: |
-#          git config --global user.email "orcunozyurt@hotmail.com"
-#          git config --global user.name "$GITHUB_ACTOR"
-#
-#          echo "CREATING TAG: v$TAG"
-#
-#          git tag -a "v$TAG" -m "Release v$TAG"
-#          echo "Listing all tags:"
-#          git tag -l
-#          git show-ref
-#          echo "Pushing tag v$TAG to GitHub"
-#          git push origin "refs/tags/v$TAG" --quiet -u ${{ secrets.GH_TOKEN }}
+          distribution: 'zulu'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+
+      - name: Grant Permission for Gradlew to Execute
+        run: chmod +x gradlew
+
+      - name: Run Tests
+        run: ./gradlew test
+
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: build
+
+      - name: Publish Library
+        run: |
+          echo "Publishing library🚀"
+          ./gradlew publishAndReleaseToMavenCentral --no-configuration-cache --no-daemon --no-parallel
+          echo "Released✅"
         env:
-          TAG: ${{ github.event.inputs.versionName }}
+          ORG_GRADLE_PROJECT_VERSION_NAME: ${{ github.event.inputs.versionName }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_KEY }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_PASSWORD }}
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
 
       - name: Create Release on GitHub
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
           tag_name: "v${{ github.event.inputs.versionName }}"
           release_name: EdgeTrack ${{ github.event.inputs.versionName }}
