@@ -59,8 +59,8 @@ jobs:
           echo "Listing all tags:"
           git tag -l
           git show-ref
-          echo "Pushing tag $TAG to GitHub"
-          git push origin "v$TAG" --quiet -u ${{ secrets.GH_TOKEN }}
+          echo "Pushing tag v$TAG to GitHub"
+          git push origin "refs/tags/v$TAG" --quiet -u ${{ secrets.GH_TOKEN }}
         env:
           TAG: ${{ github.event.inputs.versionName }}
 
