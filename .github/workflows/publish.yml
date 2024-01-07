@@ -15,38 +15,38 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '17'
-          cache: 'gradle'
-
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v2
-
-      - name: Grant Permission for Gradlew to Execute
-        run: chmod +x gradlew
-
-      - name: Run Tests
-        run: ./gradlew test
-
-      - name: Build with Gradle
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: build
-
-      - name: Publish Library
-        run: |
-          echo "Publishing library🚀"
-          ./gradlew publishAndReleaseToMavenCentral --no-configuration-cache --no-daemon --no-parallel
-          echo "Released✅"
-        env:
-          ORG_GRADLE_PROJECT_VERSION_NAME: ${{ github.event.inputs.versionName }}
-          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_KEY }}
-          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_PASSWORD }}
-          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
-          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+#      - name: Set up JDK
+#        uses: actions/setup-java@v3
+#        with:
+#          distribution: 'zulu'
+#          java-version: '17'
+#          cache: 'gradle'
+#
+#      - name: Setup Android SDK
+#        uses: android-actions/setup-android@v2
+#
+#      - name: Grant Permission for Gradlew to Execute
+#        run: chmod +x gradlew
+#
+#      - name: Run Tests
+#        run: ./gradlew test
+#
+#      - name: Build with Gradle
+#        uses: gradle/gradle-build-action@v2
+#        with:
+#          arguments: build
+#
+#      - name: Publish Library
+#        run: |
+#          echo "Publishing library🚀"
+#          ./gradlew publishAndReleaseToMavenCentral --no-configuration-cache --no-daemon --no-parallel
+#          echo "Released✅"
+#        env:
+#          ORG_GRADLE_PROJECT_VERSION_NAME: ${{ github.event.inputs.versionName }}
+#          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_KEY }}
+#          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_PASSWORD }}
+#          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+#          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
 
       - name: Create and push tag
         run: |
@@ -59,7 +59,7 @@ jobs:
           echo "Listing all tags:"
           git tag -l
           echo "Pushing tag $TAG to GitHub"
-          git push origin $TAG --quiet -u ${{ secrets.GH_TOKEN }}
+          git push origin "v$TAG" --quiet -u ${{ secrets.GH_TOKEN }}
         env:
           TAG: ${{ github.event.inputs.versionName }}
 
@@ -69,7 +69,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.event.inputs.versionName }}
+          tag_name: "v${{ github.event.inputs.versionName }}"
           release_name: EdgeTrack ${{ github.event.inputs.versionName }}
           draft: true
           prerelease: false
