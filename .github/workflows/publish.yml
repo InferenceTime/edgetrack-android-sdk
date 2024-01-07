@@ -39,10 +39,6 @@ jobs:
       - name: Publish Library
         run: |
           echo "Publishing library🚀"
-          echo "${{ secrets.MAVEN_CENTRAL_USERNAME }}"
-          echo "${{ secrets.MAVEN_CENTRAL_PASSWORD }}"
-          echo "${{ secrets.GPG_KEY }}"
-          echo "${{ secrets.GPG_PASSWORD }}"
           ./gradlew publishAndReleaseToMavenCentral --no-configuration-cache --no-daemon --no-parallel
           echo "Released✅"
         env:
@@ -54,6 +50,7 @@ jobs:
 
       - name: Create and push tag
         run: |
+          git config --global user.email "orcunozyurt@hotmail.com"
           git config --global user.name "$GITHUB_ACTOR"
 
           git tag -a $TAG -m "Release v$TAG"
