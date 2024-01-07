@@ -58,6 +58,7 @@ jobs:
           git tag -a "v$TAG" -m "Release v$TAG"
           echo "Listing all tags:"
           git tag -l
+          git show-ref
           echo "Pushing tag $TAG to GitHub"
           git push origin "v$TAG" --quiet -u ${{ secrets.GH_TOKEN }}
         env:
