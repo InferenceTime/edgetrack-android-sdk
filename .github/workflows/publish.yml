@@ -51,8 +51,8 @@ jobs:
       - name: Create and push tag
         uses: actions-ecosystem/action-push-tag@v1
         with:
-          tag: "v$TAG"
-          message: '${{ steps.bump-semver.outputs.new_version }}: PR #${{ github.event.pull_request.number }} ${{ github.event.pull_request.title }}'
+          tag: ${{ github.event.inputs.versionName }}
+          message: 'Release ${{ github.event.inputs.versionName }}'
 #        run: |
 #          git config --global user.email "orcunozyurt@hotmail.com"
 #          git config --global user.name "$GITHUB_ACTOR"
