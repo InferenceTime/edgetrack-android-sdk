@@ -52,8 +52,13 @@ jobs:
         run: |
           git config --global user.email "orcunozyurt@hotmail.com"
           git config --global user.name "$GITHUB_ACTOR"
+          
+          echo "CREATING TAG: $TAG"
 
           git tag -a $TAG -m "Release v$TAG"
+          echo "Listing all tags:"
+          git tag -l
+            echo "Pushing tag $TAG to GitHub"
           git push origin $TAG --quiet -u ${{ secrets.GITHUB_TOKEN }}
         env:
           TAG: ${{ github.event.inputs.versionName }}
