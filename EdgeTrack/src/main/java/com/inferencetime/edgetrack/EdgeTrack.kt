@@ -46,7 +46,7 @@ class EdgeTrack(
             modelName = metrics.modelName,
             modelVersion = metrics.modelVersion,
             inferenceTime = metrics.inferenceTime,
-            modelAccuracy = metrics.modelAccuracy,
+            modelAccuracy = metrics.modelAccuracy ?: 0f,
             deviceModel = deviceModel,
             osVersion = "Android$deviceOSVersion",
             apiLevel = deviceAPIVersion,
