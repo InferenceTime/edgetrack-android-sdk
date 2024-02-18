@@ -22,11 +22,10 @@ class EdgeTrack(
 
     init {
         Cache.init(context)
-        Cache.saveString("apiKey", apiKey)
-        Cache.saveString("sessionUuid", sessionUuid)
+        Cache.saveApiKey(apiKey)
+        Cache.saveSessionUuid(sessionUuid)
         val info = getDeviceInfo()
         Log.d("Device Info:", info)
-
     }
 
     /**
@@ -49,7 +48,7 @@ class EdgeTrack(
             inferenceTime = metrics.inferenceTime,
             modelAccuracy = metrics.modelAccuracy,
             deviceModel = deviceModel,
-            osVersion = deviceOSVersion,
+            osVersion = "Android$deviceOSVersion",
             apiLevel = deviceAPIVersion,
             cpuArchitecture = deviceCPUArchitecture,
             cpuCores = deviceCPUCores,

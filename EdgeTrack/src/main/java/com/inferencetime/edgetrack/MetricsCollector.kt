@@ -26,21 +26,26 @@ class MetricsCollector(
     }
 
     private fun startSendingMetrics() {
-        GlobalScope.launch(Dispatchers.IO) {
-            while (true) {
-                if (metricsQueue.isNotEmpty()) {
-                    val batch = mutableListOf<PerformanceMetrics>()
-                    // Adjust batch size based on the number of metrics
-                    val batchSize = minOf(MAX_BATCH_SIZE, metricsQueue.size)
+        try {
+            GlobalScope.launch(Dispatchers.IO) {
+                while (true) {
+                    if (metricsQueue.isNotEmpty()) {
+                        val batch = mutableListOf<PerformanceMetrics>()
+                        // Adjust batch size based on the number of metrics
+                        val batchSize = minOf(MAX_BATCH_SIZE, metricsQueue.size)
 
-                    for (i in 0 until batchSize) {
-                        metricsQueue.poll()?.let { batch.add(it) }
+                        for (i in 0 until batchSize) {
+                            metricsQueue.poll()?.let { batch.add(it) }
+                        }
+                        sendMetricsToBackend(batch)
                     }
-                    sendMetricsToBackend(batch)
+                    delay(10_000L) // Send data every 10 to 20 seconds
                 }
-                delay(10_000L) // Send data every 10 to 20 seconds
             }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
+
     }
 
     private suspend fun sendMetricsToBackend(metrics: List<PerformanceMetrics>) {
