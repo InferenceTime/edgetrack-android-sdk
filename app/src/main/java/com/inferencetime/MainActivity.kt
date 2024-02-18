@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
                 modelName = "my_test_model",
                 modelVersion = "1.0",
                 inferenceTime = randomInference,
-                modelAccuracy = 85.0f
+                modelAccuracy = 0.95f
             )
         )
     }
